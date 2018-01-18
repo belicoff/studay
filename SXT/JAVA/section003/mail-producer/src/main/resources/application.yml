@@ -34,16 +34,13 @@ spring:
     default-encoding: UTF-8
     host: smtp.163.com
     port: 25
-    username: zhao65525@163.com
-    password: zhaoguangfu
-      mail:
-        smtp:
-          auth: true
-          timeout: 30000
+    username: 15210296080@163.com
+    password: zhao65525070042
+
 druid:
   type: com.alibaba.druid.pool.DruidDataSource
   master:
-    url: jdbc:mysql://192.168.1.31:3306/mail?characterEncoding=UTF-8&autoReconnect=true&zeroDateTimeBehavior=converToNull&useUnicode=true
+    url: jdbc:mysql://192.168.1.32:3306/mail?characterEncoding=UTF-8&autoReconnect=true&zeroDateTimeBehavior=converToNull&useUnicode=true
     driver-class-name: com.mysql.jdbc.Driver
     username: root
     password: root
@@ -63,7 +60,7 @@ druid:
     filters: stat,wall,log4j
     useGlobalDataSourceStat: true
   slave:
-    url: jdbc:mysql://192.168.1.32:3306/mail?characterEncoding=UTF-8&autoReconnect=true&zeroDateTimeBehavior=converToNull&useUnicode=true
+    url: jdbc:mysql://192.168.1.33:3306/mail?characterEncoding=UTF-8&autoReconnect=true&zeroDateTimeBehavior=converToNull&useUnicode=true
     driver-class-name: com.mysql.jdbc.Driver
     username: root
     password: root
@@ -90,12 +87,6 @@ mybatis:
 logging:
   level:
     tk.mybatis: trace
-
-#mapper:
-#  mappers:
-#    - com.xxx.xxx.BaseMapper
-#  not-empty: false
-#  identity: MYSQL
 
 pagehelper:
   helper-dialect: mysql

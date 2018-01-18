@@ -44,7 +44,6 @@ public class DataSourceConfiguration {
     }
 
     @Bean(name = "slaveDataSource")
-    @Primary
     @ConfigurationProperties(prefix = "druid.slave")
     public DataSource slaveDataSource() throws SQLException {
         DataSource slaveDataSource = DataSourceBuilder.create().type(dataSourceType).build();
