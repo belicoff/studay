@@ -44,7 +44,6 @@ public class ApplicationTests {
        List<MstDict> list = mstDictMapper.selectByRowBounds(mstDict1,rowBounds);
         for(MstDict mstDict : list) {
             System.out.println(mstDict.getName());
-
         }
     }
 }
