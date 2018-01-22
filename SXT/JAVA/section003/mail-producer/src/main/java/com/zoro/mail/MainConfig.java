@@ -1,11 +1,3 @@
-/**
- * Copyright: Copyright 2016-2020 JD.COM All Right Reserved
- * FileName: com.zoro.mail.MainConfig
- * Author: belicoff
- * Department: 企业站
- * Date: 2018/1/18 0:32
- * Description: 主配置
- */
 package com.zoro.mail;
 
 import org.mybatis.spring.annotation.MapperScan;

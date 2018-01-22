@@ -1,19 +1,5 @@
-/**
- * Copyright: Copyright 2016-2020 JD.COM All Right Reserved
- * FileName: com.zoro.mail.constant.Const
- * Author: belicoff
- * Department: 企业站
- * Date: 2018/1/18 0:52
- * Description: 常亮
- */
 package com.zoro.mail.constant;
 
-/**
- * 常亮
- * @author belicoff
- * @create 2018/1/18
- * @since 1.0.0
- */
 public class Const {
 
     private Const(){

@@ -1,11 +1,3 @@
-/**
- * Copyright: Copyright 2016-2020 JD.COM All Right Reserved
- * FileName: com.zoro.mail.config.database.DataBaseContextHolder
- * Author: zhaoguangfu
- * Department:  企业站
- * Date: 2018/1/22 15:24
- * Description: 数据库操作选取
- */
 package com.zoro.mail.config.database;
 
 /**

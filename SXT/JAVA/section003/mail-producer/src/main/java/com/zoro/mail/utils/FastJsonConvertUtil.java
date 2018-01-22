@@ -1,11 +1,3 @@
-/**
- * Copyright: Copyright 2016-2020 JD.COM All Right Reserved
- * FileName: com.zoro.mail.utils.FastJsonConvertUtil
- * Author: belicoff
- * Department: 企业站
- * Date: 2018/1/18 1:20
- * Description: JSON工具
- */
 package com.zoro.mail.utils;
 
 import com.alibaba.fastjson.JSON;

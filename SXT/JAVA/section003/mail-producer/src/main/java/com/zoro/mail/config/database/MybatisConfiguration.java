@@ -1,15 +1,8 @@
-/**
- * Copyright: Copyright 2016-2020 JD.COM All Right Reserved
- * FileName: com.zoro.mail.config.database.MybatisConfiguration
- * Author: zhaoguangfu
- * Department:  企业站
- * Date: 2018/1/22 15:47
- * Description: Mybatis配置管理
- */
 package com.zoro.mail.config.database;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.aspectj.apache.bcel.util.ClassLoaderRepository;
+import org.aspectj.apache.bcel.util.ClassLoaderRepository.SoftHashMap;
 import org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.context.annotation.Bean;
@@ -29,24 +22,25 @@ import javax.sql.DataSource;
 @AutoConfigureAfter({DataSourceConfiguration.class})
 public class MybatisConfiguration extends MybatisAutoConfiguration {
 
-    @Resource(name = "masterDataSource")
+    @Resource(name="masterDataSource")
     private DataSource masterDataSource;
 
-    @Resource(name = "slaveDataSource")
+    @Resource(name="slaveDataSource")
     private DataSource slaveDataSource;
 
-    @Bean(name = "sqlSessionFactory")
+    @Bean(name="sqlSessionFactory")
     public SqlSessionFactory sqlSessionFactory() throws Exception {
         return super.sqlSessionFactory(roundRobinDataSourceProxy());
     }
 
     public AbstractRoutingDataSource roundRobinDataSourceProxy() {
         ReadWriteSplitRoutingDataSource proxy = new ReadWriteSplitRoutingDataSource();
-        ClassLoaderRepository.SoftHashMap targetDataResource = new ClassLoaderRepository.SoftHashMap();
+        SoftHashMap targetDataResource = new ClassLoaderRepository.SoftHashMap();
         targetDataResource.put(DataBaseContextHolder.DataBaseType.MASTER, masterDataSource);
         targetDataResource.put(DataBaseContextHolder.DataBaseType.SLAVE, slaveDataSource);
         proxy.setDefaultTargetDataSource(masterDataSource);
         proxy.setTargetDataSources(targetDataResource);
         return proxy;
     }
+
 }

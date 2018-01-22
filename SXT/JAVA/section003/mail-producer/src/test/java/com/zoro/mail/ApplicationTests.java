@@ -11,7 +11,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = Appendable.class)
+@SpringBootTest(classes = Application.class)
 public class ApplicationTests {
 
     @Resource(name="masterDataSource")
@@ -24,9 +24,9 @@ public class ApplicationTests {
 	@Test
 	public void contextLoads() throws SQLException {
        Connection connection1 = masterDataSource.getConnection("root", "root");
-        System.out.println("c1:" + connection1);
+       System.out.println("c1:" + connection1.getMetaData().getURL());
        Connection connection2 = slaveDataSource.getConnection("root", "root");
-        System.out.println("c2:" + connection2);
+       System.out.println("c2:" + connection2.getMetaData().getURL());
 
 	}
 
