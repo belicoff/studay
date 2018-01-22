@@ -39,7 +39,7 @@ public class DataSourceConfiguration {
     @ConfigurationProperties(prefix = "druid.master")
     public DataSource masterDataSource() throws SQLException {
         DataSource masterDataSource = DataSourceBuilder.create().type(dataSourceType).build();
-        logger.info("=======================MASTER:{}========================", masterDataSource);
+        logger.debug("=======================MASTER:{}========================", masterDataSource);
         return masterDataSource;
     }
 
@@ -47,7 +47,7 @@ public class DataSourceConfiguration {
     @ConfigurationProperties(prefix = "druid.slave")
     public DataSource slaveDataSource() throws SQLException {
         DataSource slaveDataSource = DataSourceBuilder.create().type(dataSourceType).build();
-        logger.info("=======================SLAVE:{}========================", slaveDataSource);
+        logger.debug("=======================SLAVE:{}========================", slaveDataSource);
         return slaveDataSource;
     }
 
@@ -61,7 +61,7 @@ public class DataSourceConfiguration {
         reg.addInitParameter("deny", "/deny");
 //        reg.addInitParameter("loginUsername", "zoro");
 //        reg.addInitParameter("loginPassword", "zoro");
-        logger.info("druid console manager init : {}", reg);
+        logger.debug("druid console manager init : {}", reg);
         return reg;
     }
 
@@ -71,7 +71,7 @@ public class DataSourceConfiguration {
         filterRegistrationBean.setFilter(new WebStatFilter());
         filterRegistrationBean.addUrlPatterns("/*");
         filterRegistrationBean.addInitParameter("exclusions", "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*");
-        logger.info("druid filter register : {} ", filterRegistrationBean);
+        logger.debug("druid filter register : {} ", filterRegistrationBean);
         return filterRegistrationBean;
     }
 
