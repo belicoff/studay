@@ -1,7 +1,9 @@
 package com.zoro.mail;
 
+import com.github.pagehelper.PageHelper;
 import com.zoro.mail.entity.MstDict;
 import com.zoro.mail.mapper.MstDictMapper;
+import com.zoro.mail.service.MstDictService;
 import org.apache.ibatis.session.RowBounds;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,11 +41,24 @@ public class ApplicationTests {
 
 	@Test
 	public void test1() throws Exception {
-        MstDict mstDict1 = null;
-        RowBounds rowBounds = new RowBounds(1,2);
-       List<MstDict> list = mstDictMapper.selectByRowBounds(mstDict1,rowBounds);
+//        MstDict mstDict1 = null;
+//        RowBounds rowBounds = new RowBounds(1,2);
+//       List<MstDict> list = mstDictMapper.selectByRowBounds(mstDict1,rowBounds);
+        PageHelper.startPage(1,2);
+        List<MstDict> list = mstDictMapper.selectAll();
         for(MstDict mstDict : list) {
             System.out.println(mstDict.getName());
+        }
+    }
+
+    @Autowired
+    private MstDictService mstDictService;
+
+    @Test
+    public void test2() {
+        List<MstDict> list = mstDictService.findByStatus("9");
+        for(MstDict mstDict : list) {
+            System.out.println("name=" + mstDict.getName());
         }
     }
 }

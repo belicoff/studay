@@ -6,9 +6,15 @@
         <result column="CODE" property="code" jdbcType="VARCHAR"/>
         <result column="NAME" property="name" jdbcType="VARCHAR"/>
         <result column="STATUS" property="status" jdbcType="VARCHAR"/>
+        <!--<association property=""></association>-->
+        <!--<collection property=""></collection>-->
     </resultMap>
     <sql id="Base_Column_List">
       ID, CODE, NAME, STATUS
     </sql>
+
+    <select id="findByStatus" resultMap="BaseResultMap" >
+      SELECT <include refid="Base_Column_List" /> FROM MST_DICT WHERE STATUS = #{status, jdbcType=VARCHAR}
+    </select>
 
 </mapper>
