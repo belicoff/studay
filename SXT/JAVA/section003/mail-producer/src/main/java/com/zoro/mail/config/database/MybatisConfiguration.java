@@ -1,46 +1,57 @@
 package com.zoro.mail.config.database;
 
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.aspectj.apache.bcel.util.ClassLoaderRepository;
-import org.aspectj.apache.bcel.util.ClassLoaderRepository.SoftHashMap;
+import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
-import javax.annotation.Resource;
 import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.Map;
 
-/**
- * Mybatis配置管理
- * @author zhaoguangfu
- * @create 2018/1/22
- * @since 1.0.0
- */
 @Configuration
 @AutoConfigureAfter({DataSourceConfiguration.class})
 public class MybatisConfiguration extends MybatisAutoConfiguration {
 
-    @Resource(name="masterDataSource")
-    private DataSource masterDataSource;
+    private static final Logger logger = LoggerFactory.getLogger(MybatisConfiguration.class);
 
-    @Resource(name="slaveDataSource")
-    private DataSource slaveDataSource;
+    @Value("${mybatis.type-aliases-package}")
+    private String typeAliasesPackage;
+    @Value("${mybatis.mapper-locations}")
+    private String mapperLocations;
 
-    @Bean(name="sqlSessionFactory")
-    public SqlSessionFactory sqlSessionFactory() throws Exception {
-        return super.sqlSessionFactory(roundRobinDataSourceProxy());
+    @Bean(name = "readWriteSplitRoutingDataSource")
+    public ReadWriteSplitRoutingDataSource readWriteSplitRoutingDataSource(
+            @Qualifier("masterDataSource") DataSource masterDataSource,
+            @Qualifier("slaveDataSource") DataSource slaveDataSource) {
+        ReadWriteSplitRoutingDataSource readWriteSplitRoutingDataSource = new ReadWriteSplitRoutingDataSource();
+        readWriteSplitRoutingDataSource.setDefaultTargetDataSource(masterDataSource);
+        Map<Object, Object> map = new HashMap<>();
+        map.put(DataBaseContextHolder.DataBaseType.MASTER, masterDataSource);
+        map.put(DataBaseContextHolder.DataBaseType.SLAVE, slaveDataSource);
+        readWriteSplitRoutingDataSource.setTargetDataSources(map);
+        return readWriteSplitRoutingDataSource;
     }
 
-    public AbstractRoutingDataSource roundRobinDataSourceProxy() {
-        ReadWriteSplitRoutingDataSource proxy = new ReadWriteSplitRoutingDataSource();
-        SoftHashMap targetDataResource = new ClassLoaderRepository.SoftHashMap();
-        targetDataResource.put(DataBaseContextHolder.DataBaseType.MASTER, masterDataSource);
-        targetDataResource.put(DataBaseContextHolder.DataBaseType.SLAVE, slaveDataSource);
-        proxy.setDefaultTargetDataSource(masterDataSource);
-        proxy.setTargetDataSources(targetDataResource);
-        return proxy;
+
+
+    @Bean("mysqlSqlSessionFactory")
+    public SqlSessionFactory mysqlSqlSessionFactory(
+            @Qualifier("readWriteSplitRoutingDataSource") ReadWriteSplitRoutingDataSource readWriteSplitRoutingDataSource
+    ) throws Exception {
+        logger.info(">>>>>>>>>>mysqlSqlSessionFactory初始化=<<<<<<<<<<");
+        SqlSessionFactoryBean fb = new SqlSessionFactoryBean();
+        fb.setDataSource(readWriteSplitRoutingDataSource);// 指定数据源(这个必须有，否则报错)
+        fb.setTypeAliasesPackage(typeAliasesPackage);// 指定基包
+        fb.setMapperLocations(new PathMatchingResourcePatternResolver().getResources(mapperLocations));//
+        return fb.getObject();
     }
 
 }

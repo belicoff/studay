@@ -12,17 +12,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class ReadOnlyConnectionInterceptor implements Ordered {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ReadOnlyConnection.class);
+    private static final Logger logger = LoggerFactory.getLogger(ReadOnlyConnection.class);
 
     @Around("@annotation(readOnlyConnection)")
     public Object proceed(ProceedingJoinPoint proceedingJoinPoint, ReadOnlyConnection readOnlyConnection) throws Throwable {
-        LOGGER.info("=================set dataBase connection 2 read only=================");
+        logger.info("=================set dataBase connection 2 read only=================");
         try {
             DataBaseContextHolder.setDataBaseType(DataBaseContextHolder.DataBaseType.SLAVE);
-            Object result = proceedingJoinPoint.proceed();
-            return result;
+            return proceedingJoinPoint.proceed();
         } finally {
-            LOGGER.info("=================remove dataBase connection=================");
+            logger.info("=================remove dataBase connection=================");
             DataBaseContextHolder.clearDataBaseType();
         }
     }
